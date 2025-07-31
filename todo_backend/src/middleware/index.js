@@ -1,4 +1,6 @@
-// This file will export middleware as the application grows
+const { authenticateJWT } = require('./auth');
+
+// Export middleware for extensibility
 module.exports = {
-  // Add your middleware here
+  authenticateJWT,
 };

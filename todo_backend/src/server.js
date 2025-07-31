@@ -1,11 +1,13 @@
 const app = require('./app');
+const { connectDB } = require('./db');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
-const server = app.listen(PORT, HOST, () => {
-  console.log(`Server running at http://${HOST}:${PORT}`);
-});
+connectDB().then(() => {
+  const server = app.listen(PORT, HOST, () => {
+    console.log(`Server running at http://${HOST}:${PORT}`);
+  });
 
   // Graceful shutdown
   process.on('SIGTERM', () => {
@@ -15,5 +17,9 @@ const server = app.listen(PORT, HOST, () => {
       process.exit(0);
     });
   });
+}).catch((err) => {
+  console.error('Failed to start server:', err.message);
+  process.exit(1);
+});
 
-module.exports = server;
+module.exports = app;
